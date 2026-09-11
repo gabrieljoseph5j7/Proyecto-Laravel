@@ -51,7 +51,9 @@ class ProductoController extends Controller
      */
     public function edit(Producto $producto)
     {
-        //
+        return Inertia::render('Productos/Edit', [
+            'producto' => $producto,
+        ]);
     }
 
     /**
@@ -59,7 +61,11 @@ class ProductoController extends Controller
      */
     public function update(UpdateProductoRequest $request, Producto $producto)
     {
-        //
+        $validated = $request->validated();
+        $producto->update($validated);
+        return redirect()
+            ->route('productos.index')
+            ->with('success', 'Producto actualizado exitosamente.');
     }
 
     /**
@@ -67,6 +73,9 @@ class ProductoController extends Controller
      */
     public function destroy(Producto $producto)
     {
-        //
+        $producto->delete();
+        return redirect()
+            ->route('productos.index')
+            ->with('success', 'Producto eliminado exitosamente.');
     }
 }

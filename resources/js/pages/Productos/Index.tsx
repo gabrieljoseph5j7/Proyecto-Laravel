@@ -24,9 +24,6 @@ export default function Index() {
         modelo: '',
         precio: '',
     });
-    const handleDelete = (id: number) => {
-        router.delete(`/productos/${id}`);
-    };
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         router.post('/productos', formData, {
@@ -39,12 +36,12 @@ export default function Index() {
     return (
         <>
             <Head title="Productos" />
-            <h1 style={{ color: 'purple' }} className="flex justify-center text-5xl font-bold bg-black-50" >Productos</h1>
-            <div className= "flex justify-center items-center m-8 bg-black-50">
+            <h1 style={{ color: 'blue' }} className="flex justify-center text-5xl font-bold bg-black-50" >Productos</h1>
+            <div>
                 <button
                     onClick={() => setIsModalOpen(true)}
 
-                    className="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+                    className="rounded-lg bg-blue-600 px-2 py-2 text-white hover:bg-blue-700"
                     >
                     + Añadir nuevo
                 </button>
@@ -57,6 +54,7 @@ export default function Index() {
                             <th>Marca</th>
                             <th>Modelo</th>
                             <th>Precio</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     {isModalOpen && (
@@ -149,6 +147,30 @@ export default function Index() {
                                 <td className="border-collapse font-semibold border border-gray-400 p-4 font-mono text-gray-500">{producto.marca}</td>
                                 <td className="border-collapse font-semibold border border-gray-400 p-4 font-mono text-gray-500">{producto.modelo}</td>
                                 <td className="border-collapse font-semibold border border-gray-400 p-4 font-mono text-gray-500">${producto.precio}</td>
+                                <td className="border border-gray-400 p-4">
+                                    <div className="flex gap-2">
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                router.get(`/productos/${producto.id}/edit`);
+                                            }}
+                                            className="rounded-lg bg-green-500 px-4 py-2 text-white hover:bg-green-600"
+                                        >
+                                            Editar
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                if (confirm(`¿Eliminar "${producto.n_serie}"?`)) {
+                                                    router.delete(`/productos/${producto.id}`);
+                                                }
+                                            }}
+                                            className="rounded-lg bg-red-600 px-4 py-2 text-white hover:bg-red-700"
+                                        >
+                                            Eliminar
+                                        </button>
+                                    </div>
+                                </td>
                             </tr>
                         ))}
                     </tbody>
